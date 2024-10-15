@@ -11,6 +11,7 @@ Las estrategis más habituales de guardar información entre un cliente y un ser
 
 ### Métodos del protocolo
 Tanto HTTP y HTTPS utilizan método o **verbos** para una correcta comunicación entre el cliente y el servidor. El uso correcto de estos métodos indica de forma implicita que acción debe realizar el servidor y que es lo que necesita el cliente.
+Resumen de algunos:
 #### GET
 Con este método o veerbo nos permite obtener un recurso por parte del servidor, una página web, una imagen, un video , ... 
 #### POST
@@ -21,6 +22,7 @@ Con el método put actualziamos un recurso del servidor, ya sea actualizar en re
 Eliminamos un recurso en el servidor.
 
 Estos son los más usados, pero hay muchos más.
+
 Estos verbos hacen referencia a una acción, similares a CRUD: Create, Read, Update, Delete. Algo que se debe aclarar es que estos métodos no modifican el comportamiento del servidor, se definen por el cliente al realizar la petición, pero será el servidor quien realice la acción o no. 
 El uso correcto de los métodos del protocolo definen las acciones que el servidor puede usar, todo de forma implícita.
 
