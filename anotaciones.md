@@ -78,10 +78,11 @@ Es importante, si bien no conocer todos los códigos al pie de la letra, por lo 
 Un servicio web se define como un sistema de software designado para soportar la interacción interoperativa de máquina a máquina a través de una red. O más sencillo, un conjunto de protocolos y estándares para el intercambio de información entre aplicaciones, facilitando el acceso a recursos de forma remota.
 Utilizando la arquitectura REST trabajaremos con los métodos get, post, put, delete. Con REST estos verbos se centran en un recurso en particular, mediante la url.
 Utilizando la combinación recurso-métodos es posible tener para un mismo recurso, 6 direcciones url, en escencia, pueden ser más. Ejemplo de ello:
+
 Método | URL | Acción
-- GET  /libros  Retona un listado de libros
-- POST /libros  Crea un listado de libros
-- GET /libros{id} Retorna el libro seleccionado
-- PUT /libros{id} Actualiza el libro seleccionado
-- PATCH /libros{id} Actualiza el libro seleccionado
-- DELETE /libros{id} Elimina el libro seleccionado
+- GET | /libros | Retona un listado de libros
+- POST | /libros | Crea un listado de libros
+- GET | /libros{id} | Retorna el libro seleccionado
+- PUT | /libros{id} | Actualiza el libro seleccionado
+- PATCH | /libros{id} | Actualiza el libro seleccionado
+- DELETE | /libros{id} | Elimina el libro seleccionado
