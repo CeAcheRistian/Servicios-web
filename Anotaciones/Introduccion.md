@@ -1,4 +1,4 @@
-# Curso para crear servicios web con Python y FastAPI.
+# 1. Curso para crear servicios web con Python y FastAPI.
 ## ¿Qué es HTTP?
 Hyper Text Transfer Protocol o en español, Protocolo de transferencias de hipertexto.
 Es un protocolo de comunicación con el cual podremos enviar y recibir información. Todos los sitios web usan HTTP, se comunican con el navegador que se usa para visualizar los contenidos. El navegador realiza una **petición** al servidor de la web y el servidor responde con diferentes la página web. El maquetado del sitio web, las hojas de estilo, los arhcivos JavaScript, las imagenes, videos ,... todo fue envíado a través de HTTP.

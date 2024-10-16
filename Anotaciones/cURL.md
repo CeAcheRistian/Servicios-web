@@ -1,4 +1,4 @@
-# cURL
+# 2. cURL
 ## Introducción a cURL
 cURL es una herramienta para poder testear nuestros servicios web, específicamente las APIs. Es una herramienta de líneas de comandos integrada para los s.o basados en Unix. Con esta herramienta se puede transferir información para diferentes protocolos de internet.
 
