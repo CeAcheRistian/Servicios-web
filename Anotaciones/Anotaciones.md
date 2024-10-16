@@ -24,14 +24,14 @@ variable: int
 
 Para las clases:
 
-class User():
-    def __init_(self, username:str, password:str) -> None:
-        self.username = username
+class User():  
+    def __init_(self, username:str, password:str) -> None:  
+        self.username = username  
         self.password = password
 
 ## Colecciones
 Para definir los tipos de datos para listas, tuplas, diccionarios, usamos el modulo typing de Python. Se importa y al usarse se sigue la misma sintaxis, solo que seguido de la palabra reservada se especifica el tipo de dato que contiene:
 
-from typing import List
-calificaciones: List[int]= [10,9,7]
+from typing import List  
+calificaciones: List[int]= [10,9,7]  
 def promedio(calificaciones: List[int]) -> float:
