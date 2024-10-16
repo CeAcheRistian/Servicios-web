@@ -49,3 +49,16 @@ En otra variable almacenamos la llamada de los templates, pasamos como argumento
 Para renderizarlo se usa el método render, como el template usa dos variables, le pasamos un diccionario como argumento, en el cual definimos las variables con sus valores. Este render se almacena en una variable que se retorna en formato bytes y codificada.
 
 Aquí se puede hacer una conexión a una base de datos y realizar una consulta con esos datos o bien, consumir una API o leer de un archivo, ...
+
+## Primer cliente
+
+Crearemos un cliente el cual se encargue de realizar un a petición HTTP a localhost:8000, donde se encuentra nuestro servidor, para obtener todo el maquetado que contiene el sitio web.
+
+Creamos un script de nombre client.py, también renombramos a main por server.py. Con esto manejamos al cliente y al servidor de manera separada.
+
+Usaremos el módulo url_lib para realizar una petición sobre el protocolo HTTP, en este modulo usaremos también el módulo request. Almacenamos la url a donde dirigirnos, o sea, el servidor. Creamos la variable response donde al usar el método urlopen(), que lleva poro primer argumento la url a donde irá la petición. Si se quiere ver la respuesta se imprime en consola la variable.
+
+Para hacer funcionar esto correctamente, corremos el servidor y por aparte corremos el cliente. Al ejecutar el cliente vemos que se ejecuta la petición, en consola vemos un objeto del tipo HTTPResponse. Para acceder a sus atributos llamamos al método built-in: dict. Vemos a heders, status, code, reason, url. Atributos los cuales veremos después.
+
+Para ver el máquetado del sitio web, usamos el método read(), obteniendo todo el contenido de la respuesta del servidor.
+> Lo obtenido no es un string, sino un arreglo de bytes.
