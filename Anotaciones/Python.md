@@ -1,8 +1,8 @@
 # 3. Cliente-Servidor con Python
 Para poder crear nuestro primer servidor, utilizando el estandar [WSGI](https://docs.python.org/es/3/library/wsgiref.html). El cual es una interfaz estándar entre el servidor web y aplicaciones web escritas en Python. Usaremos la función make_server.
 
-#### Nota
-Se creará un entorno virtual y dentro de la carpeta app se encontrarán todos los archivos trabajados.
+> Nota
+> Se creará un entorno virtual y dentro de la carpeta app se encontrarán todos los archivos trabajados.
 
 Dentro de main.py importamos make_server _from wsgiref.simple_server import make_server_
 Justo como su nombre lo dice, creamos un servidor sencillo.
