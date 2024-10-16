@@ -1,7 +1,7 @@
 # 3. Cliente-Servidor con Python
 Para poder crear nuestro primer servidor, utilizando el estandar [WSGI](https://docs.python.org/es/3/library/wsgiref.html). El cual es una interfaz estándar entre el servidor web y aplicaciones web escritas en Python. Usaremos la función make_server.
 
-> Nota
+> Nota:
 > Se creará un entorno virtual y dentro de la carpeta app se encontrarán todos los archivos trabajados.
 
 Dentro de main.py importamos make_server _from wsgiref.simple_server import make_server_
@@ -19,6 +19,14 @@ Dentro de la función llamamos al callback y por status code sería '200 OK' ya 
 
 Se retorna un valor para el cliente, un mensaje por ahora. El cual debe ser codificado a UTF-8, para hacer esto llamamos al método encode() y le pasamos como argumento el tipo de codificación. Todo esta respuesta dentro de una lista.
 
-Para crear el servidor se almacena en una variable la función importada make_server. Esta función recibe 3 argumentos. 1. la dirección donde se ejecuta el servidor y está a la escucha. 2. El puerto con el que estará a la escucha y 3. La función encargada que responder a las peticiones.
+Para crear el servidor se almacena en una variable la función importada make_server. Esta función recibe 3 argumentos. 1. la dirección donde se ejecuta el servidor y está a la escucha. 2. El puerto con el que estará a la escucha y 3. La función encargada que responder a las peticiones. En nuestro caso sería localhost, 800 y la app.
 
 Después se ejecuta el método serve_forever() para indicarle al servidor que se encuentre a la escucha por siempre, hasta que nosotros lo detengamos.
+
+## Retornar página HTML
+Así como retornamos texto plano también podemos retornar páginas web. 
+Para ser prácticos crearemos una constante donde se encontrará el maquetado html. Colocamos un titulo y el mensaje de respuesta lo pasamos en el cuerpo del maquetado. 
+
+Dentro de app modificamos la respuesta del servidor colocando en el return un listado de nuestra constante pero en fomato de bytes, para hacer esto ejecutamos el método bytes(), como primer argumento nuestra constante HTML y como segundo la codificación.
+
+Para finalizar, cambiamos  el segundo elemento de la tupla del encabezado de texto plano a texto html . Lo que se entiende que el tipo de contenido o Content-Type que se retorna como rspuesta del servidor es un texto html.
