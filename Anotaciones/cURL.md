@@ -6,4 +6,8 @@ Para realizar las peticiones sin mucho problema iremos a [https://httpbin.org/](
 
 Verificamos que se esté instalado curl con el comando: _curl --version_. En caso que se encuentre un windows vaya a [curl.se](https://curl.se/download.html) y descarga la versión de windows
 
-Lo siguiente a hacer es una petición get, obteniendo un recurso por parte del servidor, en este caso httpbin.org. Ejecutamos _curl https://httpbin.org/get_. Se le conoce como endpoint al ultimo tramo de la url, en este caso es get/. Se nos retorna un objeto JSON, confirmando que la petición se realizó de forma exitosa. Puesto que el servidor retorna una respuesta exitosa. En el objeto JSON se tiene como atributos los argumentos, encabezados, el origen y la url.
+Lo siguiente a hacer es una petición get, obteniendo un recurso por parte del servidor, en este caso httpbin.org. 
+
+Ejecutamos _curl https://httpbin.org/get_. Se le conoce como endpoint al ultimo tramo de la url, en este caso es get/.
+
+Se nos retorna un objeto JSON, confirmando que la petición se realizó de forma exitosa. Puesto que el servidor retorna una respuesta exitosa. En el objeto JSON se tiene como atributos los argumentos, encabezados, el origen y la url.
