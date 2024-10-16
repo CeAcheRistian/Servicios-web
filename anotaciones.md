@@ -21,12 +21,32 @@ Con el método put actualziamos un recurso del servidor, ya sea actualizar en re
 - #### DELETE
 Eliminamos un recurso en el servidor.
 
-Estos son los más usados, pero hay muchos más.
+- Estos son los más usados, pero hay muchos más.
 
 Estos verbos hacen referencia a una acción, similares a CRUD: Create, Read, Update, Delete. Algo que se debe aclarar es que estos métodos no modifican el comportamiento del servidor, se definen por el cliente al realizar la petición, pero será el servidor quien realice la acción o no. 
 El uso correcto de los métodos del protocolo definen las acciones que el servidor puede usar, todo de forma implícita.
 
+## Arquitectura cliente servidor
 
+### Servidor
+Empecemos definiendo qué es un servidor. Dispositivo electrónico capaz de conectarse a una red con un sotfware especial, el cual puede recibir, procesar y responder peticiones. Practicamente cualquier dispositivo electrónico con acceso a internet puede ser un servidor.
+Los servidores son creados para centralizar información y que esta se encuentre almacenada en un solo lugar, facilitando su recuperación y procesamiento de la misma. AL tener la información en un solo lugar, podemos tener un mayor control sobre ella, ya que solo hay una entidad que gestiona los recursos. En los servidores se pued almacenar cualquier tipo de información.
+Dependiendo del servicio que preste el servidor se le llama de diferentes formas: Servidor web, de correos, de almacenamiento, ...
 
-## Arquitectura cliente servidor 
-as
+### Cliente
+Un cliente es una pieza de software capaz de realizar peticiones a un servidor; entidad que requiere un servicio de un servidor. Se denomina petición o **request** a la acción de solicitar alguin tipo de recurso al servidor.
+Los navegadores como Firefox o Chrome son ejemplos de clientes. Se encargan de realizar múltiples peticiones a múltiples servidores. También pueden obtener y procesar las respuestas del servidor para mostrarnos la página web.
+Se le denomina respuesta o **response** a la información que el sevidor envía para satisfacer una petición.
+
+### Arquitectura cliente-servidor
+Arquitectura de software donde participan dos entidades: clientes y servidores. Quienes realizan la petición y quieres la resuelven, esta arquitectura y el protocolo HTTP(S) es la forma de interactuar a través de internet. Un cliente puede realizar múltiples peticiones a múltiples servidores y un servidor tiene la obligación de responder múltiples peticiones para múltiples clientes.
+El cliente establece la conexión con el servidor, realiza la petición y el servidor se encuentra obligado a enviar una respuesta al cliente, es responsabilidad del cliente obtener y procesar dicha información obtenida.
+
+## Status code
+Ya sea, el protocolo HTTP o HTTPS existen diferentes estatus para notificar el estado de una petición. Estos estatus se representan mediante un valor numérico, y a cada uno de estos valores se les conocen como status code, o código de estatus por su traducción al español.
+Estos códigos abarcan un rango de números enteros, que comprenden del 100 al 599.Y podemos agruparlos en 5 categorías:
+-Respuestas informativas (100–199),
+-Respuestas satisfactorias (200–299),
+-Redirecciones (300–399),
+-Errores de los clientes (400–499),
+-Errores de los servidores (500–599).
