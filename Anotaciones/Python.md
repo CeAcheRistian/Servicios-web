@@ -30,3 +30,22 @@ Para ser prácticos crearemos una constante donde se encontrará el maquetado ht
 Dentro de app modificamos la respuesta del servidor colocando en el return un listado de nuestra constante pero en fomato de bytes, para hacer esto ejecutamos el método bytes(), como primer argumento nuestra constante HTML y como segundo la codificación.
 
 Para finalizar, cambiamos  el segundo elemento de la tupla del encabezado de texto plano a texto html . Lo que se entiende que el tipo de contenido o Content-Type que se retorna como rspuesta del servidor es un texto html.
+
+## Páginas web dinámicas
+Mediante la majestuosa librería de jinja2 podremos renderizar plantillas/templates para generar páginas web dinámicas. Dentro de los templates podremos usar variables, ciclos, condicionales, ... 
+
+>Instalación que ocurre dentro del entorno virual.
+Para instalar [jinja2](https://jinja.palletsprojects.com/en/3.1.x/intro/#installation) vamos a la web y ejecutamos el comando. _pip install Jinja2_ para Unix.
+
+Creamos la carpeta templates y dentro tendremos index.html. Es este creamos un maquetado sencillo (tecleas el signo ! y pulsas enter.) Con esto podemos eliminar la constante HTML creada en main.py
+
+Haremos de los mensajes que se muestran en index, variables. Usando las dobles llaves para denotarle jinja que eso de ahí es una variable. Este juego de llaves tiene por nombre _placeholder_ y se remplazará por el valor de la variable cuando se renderice el template, obteniendo un sitio web dinámico.
+
+Dentro de main importamos las clases enviroment y FileSystemLoader ambas vienen con jinja2.
+Los siguiente es crear una varible que almacenará la ruta exacta donde se almacenen los templates a utilizar. Usando la función Enviroment y com oprimer parámetro se define la ruta de la carpeta templates con la función FileSystemLoader.
+
+En otra variable almacenamos la llamada de los templates, pasamos como argumento el nombre del template a usar.
+
+Para renderizarlo se usa el método render, como el template usa dos variables, le pasamos un diccionario como argumento, en el cual definimos las variables con sus valores. Este render se almacena en una variable que se retorna en formato bytes y codificada.
+
+Aquí se puede hacer una conexión a una base de datos y realizar una consulta con esos datos o bien, consumir una API o leer de un archivo, ...
