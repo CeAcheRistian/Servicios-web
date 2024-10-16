@@ -73,3 +73,15 @@ Estos códigos abarcan un rango de números enteros, que comprenden del 100 al 5
 - Error 503: Service Unavailabl: Ser vidro no esta listo para responder a una peticón. Una causa muy comun de este error pude deberse a que el servidor este caido por mantenimiento o está sobre cargado. 
 
 Es importante, si bien no conocer todos los códigos al pie de la letra, por lo menos si tener en mente los 5 grupos, ya que a partir de ellos sabremos exactamente que responder por cada petición de un cliente, y de esta forma estaremos creando servicios web que sigan con el standares y protocolos previamente definidos.
+
+## REST
+Un servicio web se define como un sistema de software designado para soportar la interacción interoperativa de máquina a máquina a través de una red. O más sencillo, un conjunto de protocolos y estándares para el intercambio de información entre aplicaciones, facilitando el acceso a recursos de forma remota.
+Utilizando la arquitectura REST trabajaremos con los métodos get, post, put, delete. Con REST estos verbos se centran en un recurso en particular, mediante la url.
+Utilizando la combinación recurso-métodos es posible tener para un mismo recurso, 6 direcciones url, en escencia, pueden ser más. Ejemplo de ello:
+Método | URL | Acción
+- GET  /libros  Retona un listado de libros
+- POST /libros  Crea un listado de libros
+- GET /libros{id} Retorna el libro seleccionado
+- PUT /libros{id} Actualiza el libro seleccionado
+- PATCH /libros{id} Actualiza el libro seleccionado
+- DELETE /libros{id} Elimina el libro seleccionado
