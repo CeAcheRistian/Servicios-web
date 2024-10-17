@@ -50,12 +50,12 @@ Para validar los datos, heredamos de la clase BaseModel. En los atributos de la 
 
 Con BaseModel si o si se cumplen las anotaciones, además que todos los atributos de la clase son obligatorios, si no le damos un valor al momento de instanciarlo habrá error. Si necesitamos que alguno de los valores sea opcional, entonces importamos _Optional_ de typing, y especificamos el tipo de valor que puede recivir, por default es None.
 
-from pydantic import BaseModel  
-from typing import Optional  
-- class User(BaseModel):  
-  - name: str  
-  - pass:str  
-  - age: Optional[int] = None  
-user1 = User(name=10, pass="pass123", age=27)
+>Se puede revisar el código en validaciones.py
 
 ## Validaciones propias
+El decorador field_validator, nos permitirá implementar validaciones propias para nuestros modelos. Siguiendo con el código anterior. Creamos una función para validar la longitud del nombre de usuario. Usamos el decorador validator y se especificamos la variable a la cual va a hacer efecto. La función tiene por parámetros dos objetos, cls que hace referencia a la clase y username, el cual hace referencia al atributo de la clase.  
+Con esto podemos implementar reglas "de negocio", en este caso de longitud. Retornamos el atributo de la clase al cual hacemos referencia.
+
+La creación del usuario va en un bloque try y cachamos el error ValidationError, el cual se debe de importar e imprimimos la excepción con la forma de un objeto json, esto último es opcional.
+
+En otro ejemplo vemos que la validación de dos campos, ambos deben ser contraseñas identicas. Al decorador le pasamos los campos deseados o todos los campos con *, en la función los recibimos.
