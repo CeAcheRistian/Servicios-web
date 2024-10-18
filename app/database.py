@@ -1,3 +1,5 @@
+import hashlib
+
 from datetime import datetime
 from peewee import *
 
@@ -10,6 +12,7 @@ class User(Model):
     password = CharField(max_length=50)
     created_at = DateTimeField(default=datetime.now)
 
+
     def __str__(self):
         return self.username
 
@@ -17,10 +20,17 @@ class User(Model):
         database = database
         table_name = 'users'
 
+    @classmethod
+    def create_password(cls, password):
+        hash = hashlib.md5()
+        hash.update(password.encode('utf-8'))
+        return hash.hexdigest()
+
 
 class Movie(Model):
     title = CharField(max_length=50)
     created_at = DateTimeField(default=datetime.now)
+
 
     def __str__(self):
         return self.title
@@ -36,6 +46,7 @@ class UserReview(Model):
     review = TextField()
     score = IntegerField()
     created_at = DateTimeField(default=datetime.now)
+
 
     def __str__(self):
         return f'{self.user.username} - {self.movie.title}'

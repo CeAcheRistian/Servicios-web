@@ -72,3 +72,25 @@ Con esto ya metemos los datos que el cliente pase directamente a la base de dato
 Dentro de la ruta /docs veremos la ruta users, y enviamos los valores de prueba dandole a try it out. Al ejecutar vemos que en cuadro de response body hay un 1, este es el id. También vamos a la base y vemos el usuario creado. _use fastapi project;_ y _SELECT * FROM users_
 
 ## Validar username
+
+Implementaremos una regla de negocios, no podremos introducir un nuevo usario si la longitud no es la pedida. Para ello volvemos a usar field_validator de pydantic dentro de la clase de schemas. Si mandamos un usuario que no cumpla con la longitud, entonces nos dará el error levantado y el codigo de error 422. 
+
+Acabamos de usar fastAPi y pydantic al mismo tiempo!
+
+## Generar contraseña
+
+Necesitamos encriptar la contraseña para que no sea guardada como texto plano, exiten muchis tipos de hash para hacer esto, acá se usará el MD5. Para crear la contraseña definimos un método de clase en el modelo User, importamos hashlib, almacenamos el resultado de la llamada a md5 y le pasamos la contraseña en texto plano con una codificación. Y retornamos la contraseña encriptada en hexadecimal.
+
+En main, modificamos el método de crear usuarios, instanciamos la respuesta del método de clase recién hecho y ese lo pasamos a la base. Y listo, para verificar agregamos un usuario por medio de la documentación (/docs) y lo verificamos en la base.
+
+## Elementos duplicados
+
+Si queremos añadir un usuario que ya se tiene en la base, dará un error y se morirá el server. Entonces, dentro de la función create_user y antes de generar el hash, realizamos una consulta a la tabla. En la sentencia se pretende obtener algún registro con el nombre del usuario que está pasando el cliente y a esta sentancia le ejecutamos el método exits, el cual nos dará un booleano si se encontró alguna coincidencia. Si es así, retornamos un error al cliente. usando una excepcion que viene con fastAPI con el código de error por parte del cliente y un mensaje.
+
+Con esto mostramos al cliente mejores indicaciones y no se cae el servidor.
+
+## Retornar objetos JSON
+
+En la función create_user retornaremos el usuario como diccionario, estructura que será tomada como un objeto json.
+
+## Objeto Response
