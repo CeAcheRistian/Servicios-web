@@ -60,3 +60,15 @@ Para UserReview haremos referencia a los dos modelos anteriores con llaves foran
 En main importamos los modelos Y dentro del livespan antes del yiel creamos las tablas. Si las tablas ya existen, no pasará nada, en caso contrario, se crean. Se reinica el servidor y accedemos a mysql en la terminal y con los comandos: _use (nombredelatabla)_ y _SHOW TABLES;_ veremos nuetros modelos pero ahora en tablas de SQL, para revisar sus atributos hacemos: _DESC (nombredelatabla);_ SQL crea automáticamente la llave primaria.
 
 ## Crear usuario
+
+Con el método post insertaremos los usuarios a la base de datos. En main creamos otra ruta. con el método post, la función es asíncrona. Para que el cliente pueda crear un nuevo usuario necesita enviar el nombre y contraseña. 
+
+Con pydantic podremos validar los datos de entrada y salida, procedemos a crear schemas.py, aquí crearemos los modelos que permitan validar los datos. Importamos BaseModel, creamos el modelo de usuario con los atributos obligatorios de usuario y contraseña.
+
+Vamos a main.py e importamos el modelo base en la función que estabamos creando le decimos que reciba como parámetro un objeto user de tipo UserBaseModel, al hacer esto obligamos al cliente a mandar los datos de username y password. el usuario que le pasamos como parámetro será una instancia del modelo/tabla User el cual ejecuta el método create, el cual añade un registro en la tabla que lo mande a llamar, pasandole por argumentos el username y password.
+
+Con esto ya metemos los datos que el cliente pase directamente a la base de datos. Para ver que todo funciona, retornamos el id del usuario ya registrado.
+
+Dentro de la ruta /docs veremos la ruta users, y enviamos los valores de prueba dandole a try it out. Al ejecutar vemos que en cuadro de response body hay un 1, este es el id. También vamos a la base y vemos el usuario creado. _use fastapi project;_ y _SELECT * FROM users_
+
+## Validar username

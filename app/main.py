@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from database import database as db
 from database import *
 
+from schemas import UserBaseModel
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -25,3 +26,11 @@ app = FastAPI(title='Mi primer consumo de API',
 @app.get('/')
 async def index():
     return "Hola tonotos desmañanados"
+
+@app.post('/users/')
+async def create_user(user: UserBaseModel):
+    user = User.create(
+        username = user.username,
+        password = user.password
+    )
+    return user.id
