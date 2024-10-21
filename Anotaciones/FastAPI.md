@@ -65,7 +65,7 @@ Con el método post insertaremos los usuarios a la base de datos. En main creamo
 
 Con pydantic podremos validar los datos de entrada y salida, procedemos a crear schemas.py, aquí crearemos los modelos que permitan validar los datos. Importamos BaseModel, creamos el modelo de usuario con los atributos obligatorios de usuario y contraseña.
 
-Vamos a main.py e importamos el modelo base en la función que estabamos creando le decimos que reciba como parámetro un objeto user de tipo UserBaseModel, al hacer esto obligamos al cliente a mandar los datos de username y password. el usuario que le pasamos como parámetro será una instancia del modelo/tabla User el cual ejecuta el método create, el cual añade un registro en la tabla que lo mande a llamar, pasandole por argumentos el username y password.
+Vamos a main.py e importamos el modelo base en la función que estabamos creando le decimos que reciba como parámetro un objeto user de tipo UserRequestModel, al hacer esto obligamos al cliente a mandar los datos de username y password. el usuario que le pasamos como parámetro será una instancia del modelo/tabla User el cual ejecuta el método create, el cual añade un registro en la tabla que lo mande a llamar, pasandole por argumentos el username y password.
 
 Con esto ya metemos los datos que el cliente pase directamente a la base de datos. Para ver que todo funciona, retornamos el id del usuario ya registrado.
 
@@ -91,6 +91,23 @@ Con esto mostramos al cliente mejores indicaciones y no se cae el servidor.
 
 ## Retornar objetos JSON
 
-En la función create_user retornaremos el usuario como diccionario, estructura que será tomada como un objeto json.
+En la función create_user retornaremos el usuario y su id como diccionario, estructura que será tomada como un objeto json. PERO, fastAPI recalca que se deben usar modelos para validar los datos de salida, en este caso.
 
 ## Objeto Response
+
+Creamos un nuevo modelo para validar los datos de salida, en schema especificamos los datos del usuario y su id e importamos el modelo en main. Donde retornaremos un  objeto del tipo UserResponseModel con los datos obetenidos del usuario. Para finalizar, le indicamos a fastAPI que queremos serializar nuestro objeto (objeto json) para que sea enviado como respuesta del servidor. Para esto, como segundo parámetro del decorador de la ruta le indicamos el modelo que se usará como respuesta. Y listo, obtenemos como respuesta un objeto json pero validando los datos de salida con un modelo.
+
+## Serializar objetos
+
+Que pasa si queremos mandar un objeto de tipo user y no uno serializado, para este proyecto el objeto user es un objeto de tipo model de peewee. Si lo retornarmos directamente, se va a quejar, porque no es un objeto json o un diccionario. Crearemos otra clase en schemas donde transformaremos el objeto a un diccionario, cambiando lo atributos a llaves.
+
+El objeto a retornar será un objeto UserResponse, entonces, el objeto de tipo user que ahora se tiene se convertirá en un objeto de tipo que debe ser UserReponse. Como cada clase tiene atributos diferentes debemos convertir los atributos definidos a llaves de un diccionario. De esta manera solo compartiremos con el cliente los atributos definidos dentro de schema y no dentro del modelo de peewee, esta información es irrelevante para el usuario.
+
+Esta clase hereda de una clase propia de pydantic para obtener los atributos de los objetos. Dentro sobreescribirá el método get, con las llaves y valores por parámetro. Se obtiene cada uno de los atributos de los instancias de User y se compararán con UserResponse, para obtener los valores de los atributos que coincidan con ambos modelos, el id y username.
+
+Ahora, dentro de la clase UserResponse, crearemos la clase Config, con el atributo orm_mode. FastAPI no implementa ningun ORM, queda a cada quien implementarlo, en este proyecto es peewee, la clase que se acaba de hacer, solo funcionará para el ORM de peewee. Como segundo atributo tenemos getter_dict y este es una asignación de la clase recién hecha.
+
+
+## Crear reseñas 
+
+Creamos un anueva ruta o endponint para la reseña de peliculas. Se validarán los datos de entrada y de salida, con los valores de entrada crearemos un nuevo objeto y persistirlo en la base de datos. 

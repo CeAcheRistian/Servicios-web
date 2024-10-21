@@ -1,6 +1,12 @@
 from pydantic import BaseModel, field_validator
+from pydantic.v1.utils import GetterDict
 
-class UserBaseModel(BaseModel):
+from peewee import ModelSelect
+
+from typing import Any
+
+
+class UserRequestModel(BaseModel):
     username: str
     password: str
 
@@ -10,3 +16,27 @@ class UserBaseModel(BaseModel):
             raise ValueError('La longitud debe ser entre 4 y 50 caracteres')
 
         return username
+
+
+class PeeweeGetterDict(GetterDict):
+    def get(self, key: Any, default: Any = None):
+
+        res = getattr(self._obj, key, default)
+        if isinstance(res, ModelSelect):
+            return list(res)
+
+        return res
+
+
+class UserResponseModel(BaseModel):
+    id: int
+    username: str
+    
+
+    class Config:
+        orm_mode = True
+        getter_dict = PeeweeGetterDict
+
+
+class ReviewRequestModel(BaseModel):
+    pass

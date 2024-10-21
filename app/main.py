@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from database import database as db
 from database import *
 
-from schemas import UserBaseModel
+from schemas import UserRequestModel, UserResponseModel
 
 
 @asynccontextmanager
@@ -29,19 +29,20 @@ async def index():
     return "Hola tonotos desmañanados"
 
 
-@app.post('/users')
-async def create_user(user: UserBaseModel):
+@app.post('/users', response_model=UserResponseModel)
+async def create_user(user: UserRequestModel):
 
     if User.select().where(User.username == user.username).exists():
         return HTTPException(409, 'El nombre de usuario se encuentra en uso.')
 
-    hash_password = User.create_password(user.password)
+    hashed_password = User.create_password(user.password)
 
     user = User.create(
         username=user.username,
-        password=hash_password
+        password=hashed_password
     )
-    return {
-        'usuario': user.username,
-        'id': user.id
-    }
+    return user
+
+@app.post('/reviews')
+async def create_reviews():
+    pass
