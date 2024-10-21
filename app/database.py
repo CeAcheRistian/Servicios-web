@@ -29,6 +29,8 @@ class User(Model):
 
 class Movie(Model):
     title = CharField(max_length=50)
+    year = IntegerField()
+    director = CharField(max_length=50)
     created_at = DateTimeField(default=datetime.now)
 
 

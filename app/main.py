@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from database import database as db
 from database import *
 
-from schemas import UserRequestModel, UserResponseModel
+from schemas import UserRequestModel, UserResponseModel, ReviewRequestModel, ReviewResponseModel, MovieRequestModel, MovieResponseModel
 
 
 @asynccontextmanager
@@ -43,6 +43,25 @@ async def create_user(user: UserRequestModel):
     )
     return user
 
-@app.post('/reviews')
-async def create_reviews():
-    pass
+
+@app.post('/reviews', response_model=ReviewResponseModel)
+async def create_reviews(user_review: ReviewRequestModel):
+
+    user_review = UserReview.create(
+        user=user_review.user_id,
+        movie=user_review.movie_id,
+        review=user_review.review,
+        score=user_review.score
+    )
+    return user_review
+
+
+@app.post('/movies', response_model=MovieResponseModel)
+async def create_movies(movie: MovieRequestModel):
+
+    movie = Movie.create(
+        title=movie.title,
+        year=movie.year,
+        director = movie.director
+    )
+    return movie

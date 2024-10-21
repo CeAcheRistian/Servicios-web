@@ -55,7 +55,7 @@ Para user, tiene el nombre, contraseña y la fecha por atributos. El usuario es 
 
 En Movie solo tiene 2 atributos, titulo y fecha de creación, es casi igual a User.
 
-Para UserReview haremos referencia a los dos modelos anteriores con llaves foraneas, como primer parámetro se tiene la clase a la cual se hace referencia y como segundo, una referencia que será un atributo del objeto User con el que podrá acceder a sus reseñas. Los otros dos atributos de la clase son para los reviews, calificaciones y fechas. También se reescribe str (pero imprimimos el nombre del usuario y el titulo de la pelicila) y tiene otra clase model.
+Para UserReview haremos referencia a los dos modelos anteriores con llaves foraneas, como primer parámetro se tiene la clase a la cual se hace referencia y como segundo, una referencia que será un atributo del objeto User con el que podrá acceder a sus reseñas. Los otros dos atributos de la clase son para los reviews, calificaciones y fechas. También se reescribe str (pero imprimimos el nombre del usuario y el titulo de la pelicula) y tiene otra clase model.
 
 En main importamos los modelos Y dentro del livespan antes del yiel creamos las tablas. Si las tablas ya existen, no pasará nada, en caso contrario, se crean. Se reinica el servidor y accedemos a mysql en la terminal y con los comandos: _use (nombredelatabla)_ y _SHOW TABLES;_ veremos nuetros modelos pero ahora en tablas de SQL, para revisar sus atributos hacemos: _DESC (nombredelatabla);_ SQL crea automáticamente la llave primaria.
 
@@ -101,13 +101,40 @@ Creamos un nuevo modelo para validar los datos de salida, en schema especificamo
 
 Que pasa si queremos mandar un objeto de tipo user y no uno serializado, para este proyecto el objeto user es un objeto de tipo model de peewee. Si lo retornarmos directamente, se va a quejar, porque no es un objeto json o un diccionario. Crearemos otra clase en schemas donde transformaremos el objeto a un diccionario, cambiando lo atributos a llaves.
 
-El objeto a retornar será un objeto UserResponse, entonces, el objeto de tipo user que ahora se tiene se convertirá en un objeto de tipo que debe ser UserReponse. Como cada clase tiene atributos diferentes debemos convertir los atributos definidos a llaves de un diccionario. De esta manera solo compartiremos con el cliente los atributos definidos dentro de schema y no dentro del modelo de peewee, esta información es irrelevante para el usuario.
+El objeto a retornar será un objeto UserResponse, entonces, el objeto de tipo user que ahora se tiene se convertirá en un objeto del tipo que debe ser, UserReponse. Como cada clase tiene atributos diferentes debemos convertir los atributos definidos a llaves de un diccionario. De esta manera solo compartiremos con el cliente los atributos definidos dentro de schema y no dentro del modelo de peewee, esta información es irrelevante para el usuario.
 
-Esta clase hereda de una clase propia de pydantic para obtener los atributos de los objetos. Dentro sobreescribirá el método get, con las llaves y valores por parámetro. Se obtiene cada uno de los atributos de los instancias de User y se compararán con UserResponse, para obtener los valores de los atributos que coincidan con ambos modelos, el id y username.
+Esta nueva clase (PeeweeGetterDict) hereda de una clase propia de pydantic para obtener los atributos de los objetos. Dentro sobreescribirá el método get, con las llaves y valores por parámetro. Se obtiene cada uno de los atributos de los instancias de User y se compararán con UserResponse, para obtener los valores de los atributos que coincidan con ambos modelos, el id y username.
 
 Ahora, dentro de la clase UserResponse, crearemos la clase Config, con el atributo orm_mode. FastAPI no implementa ningun ORM, queda a cada quien implementarlo, en este proyecto es peewee, la clase que se acaba de hacer, solo funcionará para el ORM de peewee. Como segundo atributo tenemos getter_dict y este es una asignación de la clase recién hecha.
 
+Con esto ya podemos retornar un objeto del tipo User y el server retornará un diccionario con las características del objeto instancia de UserResponse.
 
 ## Crear reseñas 
 
-Creamos un anueva ruta o endponint para la reseña de peliculas. Se validarán los datos de entrada y de salida, con los valores de entrada crearemos un nuevo objeto y persistirlo en la base de datos. 
+Creamos un nueva ruta o endpoint para la reseña de peliculas. Se validarán los datos de entrada y de salida, con los valores de entrada crearemos un nuevo objeto y persistirlo en la base de datos. 
+
+Empezamos creando la ruta para las reviews, después cachamos los datos del cliente, así como le hicimos con el usuario, los datos a cachar son el id del usuario, de la peli, la reseña y el score o calificación. Estos datos los cachamos y almacenamos en la base, tendremos que validar, una vez más, los datos de entrada y de salida, con un modelo, esto en schemas.py
+
+La clase ReviewRequest es muy similar a UserRequest, son la manera de cachar los datos de entrada del cliente. Como recordatorio: Todos los atributos definidos dentro del modelo son requeridos, es decir, obligatorios. Ahora, en main importamos la clase y pasamos como argumento en la función correspondiente un objeto user_review qu es del tipo de la clase recién hecha. Con esto ya tenemos los datos de entrada que nos manda el cliente, a partir de ellos, vamos a crear y persistir el objeto.
+
+Dentro de la función, instanciamos a UserReview, clase dentro de database. Y, así como en la función create_user, mapeamos o pareamos las clases de schema y database respectivas a las reviews. Estamos construyendo un objeto del tipo UserReview con datos que cachamos y verificamos del cliente, volvemos persistentes estos datos. Para retornar un objeto user_review con la data obtenida, debemos crear un modelo que pase los datos a un diccionario.
+
+Creamos una clase (ReviewResponseModel) para los datos de salida relevantes para el cliente (sus atributos). También creamos una clase Config identica a la de UserResponse para serializar los datos. En main importamos la clase recién hecha y especificamos en la ruta correspondiente que va a retornar un objeto del mismo tipo.
+
+Con esto validamos los datos de entrada y de salida, y a partir de los datos que pase el cliente creamos y persistimos un objeto.
+
+Para poder reseñar peliculas, deben haber películas en la base de datos, para meter esa información hay dos caminos: 1. Registrar un nuevo endpoint para que el cliente cree peliculas o 2. Crear los registros directamente en la tabla. Es más conveniente meter los datos directamente.
+
+### Registrando los datos por un endpoint.
+Agregamos la ruta en main y hacemos casi lo mismo, paso por paso, pero ahora, para movies, creamos modelos para los valores de entrada y de salida, los mapeamos, creamos el objeto instancia de Movies y la data se vuelve persistente. Además, añadí las columnas de director y año tanto en la base de datos, directamente a SQL y cacho esos valores de entrada y de salida.
+
+### Registrar las peliculas directamente en la base de datos.
+En una consola entramos a sql especificamos que vamos a usar la base: _use fastpi project_ y con el comando _INSERT INTO movies(campos) VALUES ('valores a añadir')_ añadimos los campos de las peliculas, separados por comas, para la columa de fecha, el valor a añadir es NOW().
+
+### Introduciendo reseñas
+Después de haber metido peliculas a la base. Probamos el endpoint en /docs. Es posible agragar y modificar reseñas, solo apuntamos a el id de la pelicula para agregarla o actualizarla.
+
+### Refactorización de la clase Config
+Creamos una clase ResponseModel y dentro colocamos lo que ya existía y se repetia de la clase config en todos las clases con apellido ResponseModel. Esta nueva clase la vamos a heredar a todas las clases que respondan al cliente: User, Movie y Review con apellido ResponseModel.
+
+Así evitamos la repetición de código.
