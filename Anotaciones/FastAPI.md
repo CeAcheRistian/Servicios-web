@@ -152,4 +152,14 @@ Haremos un endpoint con todas las reseñas (/reviews). Se hace una petición a l
 > Si no permite retornar el objeto tan cual, hacemos un list comprehesion: [user_review for user_review in reviews]
 
 ## Obtener reseña
-El cliente mandará el id de la reseña y solo se mostrará esa reseña. Esto en una nueva ruta, pero ahora con parámetros que va a mandar el cliente (/reviews/{parametro}), la función debe recibir el mismo parámetro, es requerido. Obtenemos el primer elemento que tenga el mismo id y lo retornamos, sino hay nada, mandamos una excepción.
+El cliente mandará el id de la reseña y solo se mostrará esa reseña. Esto en una nueva ruta, pero ahora con parámetros que va a mandar el cliente, los parámetros van dentro de _placeholders_ (/reviews/{parametro}), la función debe recibir el mismo parámetro, es requerido. Obtenemos el primer elemento que tenga el mismo id y lo retornamos, sino hay nada, mandamos una excepción.
+
+## Actualizar reseñas
+En una ruta con parámetros, pero ahora con el verbo put, porque vamos a actualizar. La función es casi identica a la anterior, almacenamos la coincidencia, sino existe, exepción, si sí, de actualizan los valores, estos valores deben enviarse a través del cuerpo de la petición HTTP, debemos validar los datos de entrada, para esto usaremos un modelo (ReviewRequestPutModel).
+
+Dentro de la clase vienen los atributos necesarios para actualizar la reseña: la reseña misma y el score. También debemos validar que el score esté en un rango, pero anteriormente ya teníamos un field_validator con este código, entonces haremos lo mismo que con la clase config, abstraeremos ese código en una nueva clase y luego se heredara de ella.
+
+La importamos en main y como parámetro de la función la cachamos para que con los valores del cliente se persista en la base. Y actualizamos los valores del user_review con los nuevos de review_request. Para persistir los datos, se usa el método de save y se retorna el objeto actualizado y como siempre, se especifica como segundo parámetro del decorador el tipo de objeto que se retorna.
+
+## Eliminar reseñas
+Para eliminar tenemos el método delete. Es casi lo mismo que los métodos anteriores, solo cambia el método a llamar, en este caso es .delete_instace() proveido por peewee

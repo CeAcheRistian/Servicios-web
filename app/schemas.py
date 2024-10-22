@@ -22,6 +22,9 @@ class ResponseModel(BaseModel):
         getter_dict = PeeweeGetterDict
 
 
+"""------------User----------------"""
+
+
 class UserRequestModel(BaseModel):
     username: str
     password: str
@@ -39,18 +42,24 @@ class UserResponseModel(ResponseModel):
     username: str
 
 
-class ReviewRequestModel(BaseModel):
+"""------------Reviews----------------"""
+
+
+class ReviewFieldValidator():
+
+    @field_validator('score')
+    def score_validator(cls, score):
+        if score < 1 or score > 10:
+            raise ValueError('Solo se permiten valores entre el 1 y 10.')
+
+        return score
+
+
+class ReviewRequestModel(BaseModel, ReviewFieldValidator):
     user_id: int
     movie_id: int
     review: str
     score: int
-
-    @field_validator('score')
-    def score_validator(cls, score) -> str:
-        if score < 1 or score > 10:
-            raise ValueError('Solo se permiten valores entre el 1 y 10.')
-        
-        return score
 
 
 class ReviewResponseModel(ResponseModel):
@@ -58,6 +67,14 @@ class ReviewResponseModel(ResponseModel):
     movie_id: int
     review: str
     score: int
+
+
+class ReviewRequestPutModel(BaseModel, ReviewFieldValidator):
+    review: str
+    score: int
+
+
+"""------------Movies----------------"""
 
 
 class MovieRequestModel(BaseModel):
