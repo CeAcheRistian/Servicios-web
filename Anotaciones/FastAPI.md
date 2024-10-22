@@ -138,3 +138,18 @@ Después de haber metido peliculas a la base. Probamos el endpoint en /docs. Es 
 Creamos una clase ResponseModel y dentro colocamos lo que ya existía y se repetia de la clase config en todos las clases con apellido ResponseModel. Esta nueva clase la vamos a heredar a todas las clases que respondan al cliente: User, Movie y Review con apellido ResponseModel.
 
 Así evitamos la repetición de código.
+
+## Validar puntaje
+Se hará una validación en el score, donde solo se acepte el rango de 1 a 10. Si el cliente no manda un número en este rango, se lanzará un error. Así como en username usamos el decorador field_validator.
+
+## Validar llaves foraneas
+Se va a condicionar que el usuario y la pelicula que manda el cliente existan en la base de datos. Con esto evitamos error con llaves foraneas.
+
+En la función create_review obtenemos el primer registro que se tenga de la review por medio del id del usuario, si no lo haya, entonces salta la excepción. Lo mismo para pelicula.
+
+## Listado de reseñas
+Haremos un endpoint con todas las reseñas (/reviews). Se hace una petición a la base para obtener todas las reseñas y retornamos unb listado de objetos ReviewResponse.
+> Si no permite retornar el objeto tan cual, hacemos un list comprehesion: [user_review for user_review in reviews]
+
+## Obtener reseña
+El cliente mandará el id de la reseña y solo se mostrará esa reseña. Esto en una nueva ruta, pero ahora con parámetros que va a mandar el cliente (/reviews/{parametro}), la función debe recibir el mismo parámetro, es requerido. Obtenemos el primer elemento que tenga el mismo id y lo retornamos, sino hay nada, mandamos una excepción.

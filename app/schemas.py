@@ -6,18 +6,6 @@ from peewee import ModelSelect
 from typing import Any
 
 
-class UserRequestModel(BaseModel):
-    username: str
-    password: str
-
-    @field_validator('username')
-    def username_validator(cls, username) -> str:
-        if len(username) < 3 or len(username) > 50:
-            raise ValueError('La longitud debe ser entre 4 y 50 caracteres')
-
-        return username
-
-
 class PeeweeGetterDict(GetterDict):
     def get(self, key: Any, default: Any = None):
 
@@ -34,6 +22,18 @@ class ResponseModel(BaseModel):
         getter_dict = PeeweeGetterDict
 
 
+class UserRequestModel(BaseModel):
+    username: str
+    password: str
+
+    @field_validator('username')
+    def username_validator(cls, username) -> str:
+        if len(username) < 3 or len(username) > 50:
+            raise ValueError('La longitud debe ser entre 4 y 50 caracteres')
+
+        return username
+
+
 class UserResponseModel(ResponseModel):
     id: int
     username: str
@@ -44,6 +44,13 @@ class ReviewRequestModel(BaseModel):
     movie_id: int
     review: str
     score: int
+
+    @field_validator('score')
+    def score_validator(cls, score) -> str:
+        if score < 1 or score > 10:
+            raise ValueError('Solo se permiten valores entre el 1 y 10.')
+        
+        return score
 
 
 class ReviewResponseModel(ResponseModel):
@@ -64,4 +71,3 @@ class MovieResponseModel(ResponseModel):
     title: str
     year: int
     director: str
-

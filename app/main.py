@@ -1,3 +1,5 @@
+from typing import List
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 
@@ -47,6 +49,12 @@ async def create_user(user: UserRequestModel):
 @app.post('/reviews', response_model=ReviewResponseModel)
 async def create_reviews(user_review: ReviewRequestModel):
 
+    if User.select().where(User.id == user_review.user_id).first() is None:
+        raise HTTPException(status_code=404, detail='Usuario no encontrado.')
+    
+    if Movie.select().where(Movie.id == user_review.movie_id).first() is None:
+        raise HTTPException(status_code=404, detail='Pelicula no encontrada.')
+
     user_review = UserReview.create(
         user=user_review.user_id,
         movie=user_review.movie_id,
@@ -65,3 +73,18 @@ async def create_movies(movie: MovieRequestModel):
         director = movie.director
     )
     return movie
+
+@app.get('/reviews', response_model=List[ReviewResponseModel])
+async def get_reviews():
+    reviews = UserReview.select()
+
+    return reviews
+
+
+@app.get('/reviews/{review_id}', response_model=ReviewResponseModel)
+async def get_review(review_id: int):
+    user_review = UserReview.select().where(UserReview.id == review_id).first()
+
+    if user_review is None:
+        raise HTTPException(status_code=404, detail='Review no encontrada.')
+    return user_review
