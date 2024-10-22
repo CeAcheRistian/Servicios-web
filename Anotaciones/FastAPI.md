@@ -163,3 +163,7 @@ La importamos en main y como parámetro de la función la cachamos para que con 
 
 ## Eliminar reseñas
 Para eliminar tenemos el método delete. Es casi lo mismo que los métodos anteriores, solo cambia el método a llamar, en este caso es .delete_instace() proveido por peewee
+
+> Para verificar el CRUD nos vamos a docs y a la base.
+
+## Paginacion
