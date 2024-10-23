@@ -217,4 +217,11 @@ Importamos la clase del submodulo security de fastAPI y dentro de la función re
 ## Cookies
 Extenderemos la respuesta al cliente, manteniendo una respuesta stateless, es decir, que ningún dato sensible se almacena.  Se creará y enviará una cookie al cliente, notificando que se logeo.
 
-Para crear una cookie en fastAPI existe un objeto del tipo response, se importa y se coloca un objeto de su tipo como segundo parámetro de la función login. Con este objeto añadiremos una cookie a la respuesta del servidor con su método _set-cookie_ y los parámetros son el id del usuario logeado.
+Para crear una cookie en fastAPI existe un objeto del tipo response, se importa y se coloca un objeto de su tipo como segundo parámetro de la función login. Con este objeto añadiremos una cookie a la respuesta del servidor con su método _set-cookie_ y los parámetros son el id del usuario logeado, pero pueden ser cualquier dato.
+
+## Listado de reseñas v2
+Listado de reseñas de un usuario autenticado. Para lograr eso leeremos los valores de cookies. Dentro de user, agregamos la nueva ruta. fastAPI tiene un objeto Cookie el cual recibiremos por parámetro, este objeto tendrá las llevaes-valor que retornemos de la función login. El nombre del parámetro debe ser el mismo que el de la llave. Este parámetro es un entero si se pasa un valor, sino es None.
+
+Obtenemos el usuario por medio de una consulta y retornamos el atributo review del objeto instancia de User, este atributo es una llave foránea. Y le indicamos al decorador que retornaremos una lista de objetos del tipo ReviewResponse.
+
+> Y listo con esto se termina la parte de fastAPI
