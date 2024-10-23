@@ -184,3 +184,37 @@ Modificaremos el atributo movie_id del modelo ReviewResponse por movie que es de
 Cada que retornemos un objeto del tipo ReviewResponse en automático se realiza una consulta para poder objetener el objeto relacionado, en este caso, la pelicula. UserReview
 
 ## Refactor del proyecto
+Hasta este momento __YA TENEMOS UNA API totalmente funcional__ pero, todas las rutas están en un mismo archivo, lo cual no está bien, vamos a modularizar las rutas. Para tener un solo archivo para las rutas respecto a los usuarios, otro donde vayan las rutas de peliculas y otro de reseñas. Obteniendo un proeycto más fácil de leer y mantener.
+
+Dentro de la carpeta app renombramos main como init para convertirlo en un paquete, dejando dentro de la carpeta app solo a database.py y schemas.py.
+
+Ahora, creamos un archivo main FUERA de la carpeta app, e importamos nuestra API de nombre app. Adentro de init debemos cambiar las importaciones, especificamente las que vienen de database y de schema. Como ahora es un paquete debemos agregar un punto a los archivo que están en la misma carpeta/paquete.
+
+>Para levantar el servidor nos posicionamos en la carpeta que contenga el archivo main.
+
+Creamos la carpeta routers dentro de app, con su respectivo init para que sea un paquete y agregamos dos archivos nuevos: reviews, users y movies. Dentro de estos archivos colocamos las rutas bajo un contexto. Entonces pasamos todas las rutas de init a sus archivos correspondientes, estas rutas ocupan modelos-clases-heramientas que importamos anteriormente, pues lo volvemos a hacer.
+
+> Como database y schemas están fuera de los archivos, al importar se colocan dos puntos (..database)
+
+Se necesita la importación del objeto app, para añadir nuevas rutas además de cargar la conexión con la API, pero no podemos importarla, así que usamos la herramienta APIRouter, con la cual podremos registrar nuestras propias rutas, bajo un contexto, agregamos un prefijo que se va usar en todas las rutas de este archivo. Y cambiamos el decorador, en vez de app.route, será router.route y en la ruta que antes teniamos ('/users') lo dejamos en nada ('') porque en el prefijo ya tenemos la palabra users.
+
+Dentro de init del paquete router, importamos el objeto router con un apodo para identificarlo de los otros que vamos a importar. Ahora vamos al init del paquete app e importamos el router, para incluir las rutas creadas e importadas usamos el método de include_router() con un listado de rutas, el cual es llamado por nuestra app.
+
+Hacemos lo mismo pero ahora en movies y reviews.
+
+## Refactor rutas
+Para mandar la ruta del prefijo desde init del paquete de app creamos una nueva instancia de apirouter (api_v1) en el cual tendremos el prefijo que todas nuestras rutas comparten, este objeto es ahora quien manda a llamar a include_route con las rutas de reviews,movies y users, para que esto surta efecto debe ser nuestra app quien mande a llamar a include_router del objeto api_v1 el cual, a su vez ya incluye las rutas.
+
+En los modulos de las rutas debemos borrar la parte del prefijo que se está repitiendo ('/api/v1/') dejando solo la ruta corresdiente.
+
+> Es importante que se especifique la versión por eso se repite tanto el v1.
+
+## Login
+Crearemos una ruta para autenticar los usuarios. Con esto podremos saber las reseñas del usuario logeado. En _users.py_ creamos la ruta. Debemos validar los datos de entrada y de salida. Para obtener los datos del usuario que se manda al servidor usamos la clase __HTTPBasicCredential__ de fastAPI  objeto que cacharemos como parámetro de nuestra función. Los objetos de esa clase poden dos atributos, username y password.
+
+Importamos la clase del submodulo security de fastAPI y dentro de la función realizamos una consulta para obtener el usuario comparando lo que nos manda el cliente con lo que tenemos en la base sino existe, excepción, si sí, comparamos las contraseñas, pero la contraseña que se encuentra en la base está encriptada así que tenemos que comparar esa contraseña con la contraseña que nos manda el cliente pero la pasamos por el método de clase que creamos para crear contraseñas encriptadas. Si todo va bien, retornamos el objeto user.
+
+## Cookies
+Extenderemos la respuesta al cliente, manteniendo una respuesta stateless, es decir, que ningún dato sensible se almacena.  Se creará y enviará una cookie al cliente, notificando que se logeo.
+
+Para crear una cookie en fastAPI existe un objeto del tipo response, se importa y se coloca un objeto de su tipo como segundo parámetro de la función login. Con este objeto añadiremos una cookie a la respuesta del servidor con su método _set-cookie_ y los parámetros son el id del usuario logeado.
