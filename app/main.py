@@ -76,10 +76,11 @@ async def create_movies(movie: MovieRequestModel):
 
 
 @app.get('/reviews', response_model=List[ReviewResponseModel])
-async def get_reviews():
-    reviews = UserReview.select()
+async def get_reviews(page: int = 1, limit: int = 10):
 
+    reviews = UserReview.select().paginate(page, limit)
     return reviews
+    #return [user_review for user_review in reviews]
 
 
 @app.get('/reviews/{review_id}', response_model=ReviewResponseModel)

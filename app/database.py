@@ -20,6 +20,7 @@ class User(Model):
         database = database
         table_name = 'users'
 
+
     @classmethod
     def create_password(cls, password):
         hash = hashlib.md5()
@@ -44,7 +45,7 @@ class Movie(Model):
 
 class UserReview(Model):
     user = ForeignKeyField(User, backref='reviews')
-    movie = ForeignKeyField(User, backref='reviews')
+    movie = ForeignKeyField(Movie)
     review = TextField()
     score = IntegerField()
     created_at = DateTimeField(default=datetime.now)

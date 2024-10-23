@@ -53,9 +53,10 @@ Modelos o tablas, serán 3: user, movie, user_review. El objetivo: Un servicio d
 
 Para user, tiene el nombre, contraseña y la fecha por atributos. El usuario es de tipo CharField y se le indica la longitud máxima, además se le indica que los usuarios deben ser únicos, para la contraseña es casi lo mismo, para la fecha instanciamos de DateTimeField y le especificamos la fecha del momento de creación, como siempre al tratar con fechas, importamos datetime. Sobreescribimos el método built-in: str para que cuando se imprima un objeto user, se obtendrá el nombre. También creamos otra clase, Meta, donde indicamos la base de datos y el nombre de la tabla.
 
-En Movie solo tiene 2 atributos, titulo y fecha de creación, es casi igual a User.
 
 Para UserReview haremos referencia a los dos modelos anteriores con llaves foraneas, como primer parámetro se tiene la clase a la cual se hace referencia y como segundo, una referencia que será un atributo del objeto User con el que podrá acceder a sus reseñas. Los otros dos atributos de la clase son para los reviews, calificaciones y fechas. También se reescribe str (pero imprimimos el nombre del usuario y el titulo de la pelicula) y tiene otra clase model.
+
+> Se debe hacer referencia al modelo especifico en las llaves foráneas o tendrás problemas en el futuro.
 
 En main importamos los modelos Y dentro del livespan antes del yiel creamos las tablas. Si las tablas ya existen, no pasará nada, en caso contrario, se crean. Se reinica el servidor y accedemos a mysql en la terminal y con los comandos: _use (nombredelatabla)_ y _SHOW TABLES;_ veremos nuetros modelos pero ahora en tablas de SQL, para revisar sus atributos hacemos: _DESC (nombredelatabla);_ SQL crea automáticamente la llave primaria.
 
@@ -167,3 +168,19 @@ Para eliminar tenemos el método delete. Es casi lo mismo que los métodos anter
 > Para verificar el CRUD nos vamos a docs y a la base.
 
 ## Paginacion
+En el subtema de listado de reseñas retornamos todas las reseñas existentes, lo cual no es una buena práctica, ya que pued ehaber miles de registros en la base. Vamos a paginar la consulta, el servidor retornará bloques de registros, conforme el cliente lo vaya requiriendo, no sapoyaremos de un __QuerySet__.
+
+QuerySet: El cual es un listado de valores que podemos enviar a través de la url, a diferencia de los parámetros, un queryset es opcional y se conforma por el nombre del valor y su valor. Los queryset se encuentran en la ruta, depués del signo de interrogación.
+
+Implementamos un refactor sobre la función get_reviews. Empezamos agregando el método paginate() al select anterior, con este método se paginará la consulta y recibe 2 parámetros, la referencia a página actual y la cantidad máxima de elementos a mostrar. En los parámetros de la función agregamos estos valores que tienen valores por defecto. Por defecto mostramos la pagina 1 y 10 registros por página.
+
+En docs veremos que hay una casillas para los valores de página y la cantidad de valores. En el cURL vemos la petición y como se manda con el signo de interrogación y la especificación del queryset. (/reviews?page=1&limit=1)
+
+## Modelos relacionados
+Al ver las reseñas como respuuesta del servidor, podemos der los id, pero no el nombre de las peliculas, así que relacionaremos modelos para mostrar esta respuesta.
+
+Modificaremos el atributo movie_id del modelo ReviewResponse por movie que es del tipo MovieResponse, con esto ya estaremos relacionando objetos. Una reseña le pertenece a una pelicula y una pelicula tiene sus atributos id, titulo, año y director.
+
+Cada que retornemos un objeto del tipo ReviewResponse en automático se realiza una consulta para poder objetener el objeto relacionado, en este caso, la pelicula. UserReview
+
+## Refactor del proyecto

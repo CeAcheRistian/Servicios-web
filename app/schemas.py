@@ -18,7 +18,7 @@ class PeeweeGetterDict(GetterDict):
 
 class ResponseModel(BaseModel):
     class Config:
-        orm_mode = True
+        from_attributes = True
         getter_dict = PeeweeGetterDict
 
 
@@ -40,6 +40,22 @@ class UserRequestModel(BaseModel):
 class UserResponseModel(ResponseModel):
     id: int
     username: str
+
+
+"""------------Movies----------------"""
+
+
+class MovieRequestModel(BaseModel):
+    title: str
+    year: int
+    director: str
+
+
+class MovieResponseModel(ResponseModel):
+    id: int
+    title: str
+    year: int
+    director: str
 
 
 """------------Reviews----------------"""
@@ -64,7 +80,8 @@ class ReviewRequestModel(BaseModel, ReviewFieldValidator):
 
 class ReviewResponseModel(ResponseModel):
     id: int
-    movie_id: int
+    user: UserResponseModel
+    movie: MovieResponseModel
     review: str
     score: int
 
@@ -72,19 +89,3 @@ class ReviewResponseModel(ResponseModel):
 class ReviewRequestPutModel(BaseModel, ReviewFieldValidator):
     review: str
     score: int
-
-
-"""------------Movies----------------"""
-
-
-class MovieRequestModel(BaseModel):
-    title: str
-    year: int
-    director: str
-
-
-class MovieResponseModel(ResponseModel):
-    id: int
-    title: str
-    year: int
-    director: str
