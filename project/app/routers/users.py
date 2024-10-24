@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import HTTPException, APIRouter, Response, Depends
 from fastapi.security import HTTPBasicCredentials
 
@@ -7,7 +9,6 @@ from ..schemas import UserRequestModel, UserResponseModel, ReviewResponseModel
 
 from ..common import get_current_user
 
-from typing import List
 
 router = APIRouter(prefix='/users')
 
@@ -53,5 +54,5 @@ async def get_reviews(user_id: int = Cookie(None)):
     return user.reviews"""
 
 @router.get('/reviews', response_model=List[ReviewResponseModel])
-async def get_reviews(user: User = Depends(get_current_user)):
+async def get_reviews(user: User = Depends(get_current_user)) -> List[User]:
     return user.reviews

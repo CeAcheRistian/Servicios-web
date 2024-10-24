@@ -7,9 +7,9 @@ from typing import Any
 
 
 class PeeweeGetterDict(GetterDict):
-    def get(self, key: Any, default: Any = None):
+    def get(self, key: Any, default_value: Any = None):
 
-        res = getattr(self._obj, key, default)
+        res = getattr(self._obj, key, default_value)
         if isinstance(res, ModelSelect):
             return list(res)
 
@@ -31,6 +31,7 @@ class UserRequestModel(BaseModel):
 
     @field_validator('username')
     def username_validator(cls, username) -> str:
+
         if len(username) < 3 or len(username) > 50:
             raise ValueError('La longitud debe ser entre 4 y 50 caracteres')
 
@@ -64,7 +65,8 @@ class MovieResponseModel(ResponseModel):
 class ReviewFieldValidator():
 
     @field_validator('score')
-    def score_validator(cls, score):
+    def score_validator(cls, score) -> int:
+
         if score < 1 or score > 10:
             raise ValueError('Solo se permiten valores entre el 1 y 10.')
 
@@ -72,7 +74,7 @@ class ReviewFieldValidator():
 
 
 class ReviewRequestModel(BaseModel, ReviewFieldValidator):
-    #user_id: int
+    # user_id: int Ahora es cachado por medio de un token
     movie_id: int
     review: str
     score: int

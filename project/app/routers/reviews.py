@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import HTTPException, APIRouter, Depends
 
 from ..database import UserReview, User, Movie
@@ -6,13 +8,11 @@ from ..schemas import ReviewRequestModel, ReviewResponseModel, ReviewRequestPutM
 
 from ..common import get_current_user
 
-from typing import List
 
 router = APIRouter(prefix='/reviews')
 
-
 @router.post('', response_model=ReviewResponseModel)
-async def create_reviews(user_review: ReviewRequestModel, user: User = Depends(get_current_user)):
+async def create_reviews(user_review: ReviewRequestModel, user: User = Depends(get_current_user)) -> UserReview:
 
     if Movie.select().where(Movie.id == user_review.movie_id).first() is None:
         raise HTTPException(status_code=404, detail='Pelicula no encontrada.')
@@ -27,7 +27,7 @@ async def create_reviews(user_review: ReviewRequestModel, user: User = Depends(g
 
 
 @router.get('', response_model=List[ReviewResponseModel])
-async def get_reviews(page: int = 1, limit: int = 10):
+async def get_reviews(page: int = 1, limit: int = 10) -> UserReview:
 
     reviews = UserReview.select().paginate(page, limit)
     return reviews
@@ -35,7 +35,8 @@ async def get_reviews(page: int = 1, limit: int = 10):
 
 
 @router.get('/{review_id}', response_model=ReviewResponseModel)
-async def get_review(review_id: int):
+async def get_review(review_id: int) -> UserReview:
+
     user_review = UserReview.select().where(UserReview.id == review_id).first()
 
     if user_review is None:
@@ -44,7 +45,7 @@ async def get_review(review_id: int):
 
 
 @router.put('/{review_id}', response_model=ReviewResponseModel)
-async def update_review(review_id: int, review_request: ReviewRequestPutModel, user: User = Depends(get_current_user)):
+async def update_review(review_id: int, review_request: ReviewRequestPutModel, user: User = Depends(get_current_user)) -> UserReview:
 
     user_review = UserReview.select().where(UserReview.id == review_id).first()
 
@@ -62,7 +63,7 @@ async def update_review(review_id: int, review_request: ReviewRequestPutModel, u
 
 
 @router.delete('/{review_id}', response_model=ReviewResponseModel)
-async def delete_review(review_id: int, user: User = Depends(get_current_user)):
+async def delete_review(review_id: int, user: User = Depends(get_current_user)) -> UserReview:
     
     user_review = UserReview.select().where(UserReview.id == review_id).first()
 

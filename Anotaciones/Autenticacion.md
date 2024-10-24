@@ -78,4 +78,6 @@ Para create_review en reviews.py pasamos por parámetro un objeto del tipo Revie
 
 Para update_review, añadimos otro parámetro identico a lo hecho anteriormente, y dentro de la función condicionamos para ver si el id es el mismo.
 
-Lo mismo para delete
+Lo mismo para delete.
+
+Y listo, solo verificamos que todo corra y checamos la sintaxis y buena práctica de espacios y demás cosas.

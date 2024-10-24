@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, APIRouter, Depends, HTTPException, status
 
+from fastapi import FastAPI, APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from .routers import user_router, review_router, movie_router
@@ -33,8 +33,7 @@ api_v1.include_router(review_router)
 api_v1.include_router(movie_router)
 
 @api_v1.post('/auth')
-async def auth(data: OAuth2PasswordRequestForm = Depends()):
-
+async def auth(data: OAuth2PasswordRequestForm = Depends()) -> dict:
     user = User.authenticate(data.username, data.password)
 
     if user:
@@ -48,6 +47,7 @@ async def auth(data: OAuth2PasswordRequestForm = Depends()):
             detail='Username o Password incorrectos',
             headers={'WWW-Authenticate': 'Beraer'}
         )
+
 app.include_router(api_v1)
 
 @app.get('/')
