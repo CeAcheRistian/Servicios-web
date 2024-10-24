@@ -8,6 +8,7 @@ from .routers import user_router, review_router, movie_router
 from .database import database as db
 from .database import *
 
+from .common import create_access_token
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -37,7 +38,10 @@ async def auth(data: OAuth2PasswordRequestForm = Depends()):
     user = User.authenticate(data.username, data.password)
 
     if user:
-        return {'username': data.username, 'password': data.password}
+        return {
+            'access_token': create_access_token(user),
+            'token_type': 'Bearer'
+        }
     else:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

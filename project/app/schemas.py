@@ -72,7 +72,7 @@ class ReviewFieldValidator():
 
 
 class ReviewRequestModel(BaseModel, ReviewFieldValidator):
-    user_id: int
+    #user_id: int
     movie_id: int
     review: str
     score: int
