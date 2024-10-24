@@ -1,5 +1,7 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Depends, HTTPException, status
+
+from fastapi.security import OAuth2PasswordRequestForm
 
 from .routers import user_router, review_router, movie_router
 
@@ -20,8 +22,8 @@ async def lifespan(app: FastAPI):
         db.close()
     print('Desconectando ...')
 
-app = FastAPI(title='Mi primer consumo de API',
-            description='Proyecto para reseñar peliculas.', version='1.0', lifespan=lifespan)
+app = FastAPI(title='Reseñas de peliculas',
+            description='Proyecto backend para reseñar peliculas.', version='1.0', lifespan=lifespan)
 
 api_v1 = APIRouter(prefix='/api/v1')
 
@@ -29,11 +31,24 @@ api_v1.include_router(user_router)
 api_v1.include_router(review_router)
 api_v1.include_router(movie_router)
 
+@api_v1.post('/auth')
+async def auth(data: OAuth2PasswordRequestForm = Depends()):
+
+    user = User.authenticate(data.username, data.password)
+
+    if user:
+        return {'username': data.username, 'password': data.password}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Username o Password incorrectos',
+            headers={'WWW-Authenticate': 'Beraer'}
+        )
 app.include_router(api_v1)
 
 @app.get('/')
 async def index():
-    return "Hola tonotos desmañanados"
+    return "Hola mundo"
 
 
 

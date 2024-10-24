@@ -12,7 +12,6 @@ class User(Model):
     password = CharField(max_length=50)
     created_at = DateTimeField(default=datetime.now)
 
-
     def __str__(self):
         return self.username
 
@@ -20,6 +19,12 @@ class User(Model):
         database = database
         table_name = 'users'
 
+    @classmethod
+    def authenticate(cls, username, password):
+        user = cls.select().where(User.username == username).first()
+
+        if user and user.password == cls.create_password(password):
+            return user
 
     @classmethod
     def create_password(cls, password):
@@ -33,7 +38,6 @@ class Movie(Model):
     year = IntegerField()
     director = CharField(max_length=50)
     created_at = DateTimeField(default=datetime.now)
-
 
     def __str__(self):
         return self.title
@@ -49,7 +53,6 @@ class UserReview(Model):
     review = TextField()
     score = IntegerField()
     created_at = DateTimeField(default=datetime.now)
-
 
     def __str__(self):
         return f'{self.user.username} - {self.movie.title}'
