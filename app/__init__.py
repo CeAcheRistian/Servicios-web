@@ -52,7 +52,7 @@ app.include_router(api_v1)
 
 @app.get('/')
 async def index():
-    return "Hola mundo"
+    return "Hola mundo ''"
 
 
 
