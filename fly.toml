@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for api-resenia-peliculas on 2024-10-31T23:15:58-06:00
+# fly.toml app configuration file generated for api-resenia-peliculas on 2024-11-06T12:54:47-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -7,14 +7,18 @@ app = 'api-resenia-peliculas'
 primary_region = 'qro'
 
 [build]
+  image = 'mysql:8'
 
-[http_service]
-  internal_port = 8000
-  force_https = true
-  auto_stop_machines = 'stop'
-  auto_start_machines = true
-  min_machines_running = 0
-  processes = ['app']
+[env]
+  MYSQL_DATABASE = 'fastapi_project'
+  MYSQL_USER = 'root'
+
+[processes]
+  app = '--datadir /data/mysql --default-authentication-plugin mysql_native_password'
+
+[[mounts]]
+  source = 'mysqldata'
+  destination = '/data'
 
 [[vm]]
   memory = '1gb'

@@ -1,10 +1,14 @@
 import hashlib
 
+import psycopg2
+
 from datetime import datetime
 from peewee import *
 
-database = MySQLDatabase('fastapi_project', user='root',
-                        password='', host='localhost', port=3306)
+from local_settings import USER_DATABASE, PASSWORD_DATABASE
+
+
+database = PostgresqlDatabase('fastapi_project', user=USER_DATABASE,password=PASSWORD_DATABASE, host='localhost')
 
 
 class User(Model):
