@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.responses import RedirectResponse
 
 from .routers import user_router, review_router, movie_router
 
@@ -52,7 +53,7 @@ app.include_router(api_v1)
 
 @app.get('/')
 async def index():
-    return "Hola mundo ''"
+    return RedirectResponse(url='/docs')
 
 
 
