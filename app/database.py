@@ -2,12 +2,13 @@ import hashlib
 
 from datetime import datetime
 from peewee import *
+from peewee import PostgresqlDatabase
 
 from local_settings import USER_DATABASE, PASSWORD_DATABASE
 
 
 database = PostgresqlDatabase('fastapi_project', user=USER_DATABASE,password=PASSWORD_DATABASE, host='localhost')
-
+#database = PostgresqlDatabase('fastapidb', user=USER_DATABASE, password=PASSWORD_DATABASE, host='postgresql://fastapidb.flycast', port=5432)
 
 class User(Model):
     username = CharField(max_length=50, unique=True)

@@ -13,6 +13,8 @@ from .common import create_access_token
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+
+    
     if db.is_closed():
         db.connect()
 
